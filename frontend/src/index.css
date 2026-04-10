@@ -1,0 +1,27 @@
+@import 'tailwindcss';
+
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@layer base {
+  html {
+    @apply bg-[#eef1f7] text-[#141824] dark:bg-[#0f1117] dark:text-[#eef0f5];
+    font-family:
+      system-ui,
+      'Segoe UI',
+      Roboto,
+      sans-serif;
+    line-height: 1.45;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply m-0 min-h-dvh;
+  }
+
+  #root {
+    @apply min-h-dvh;
+  }
+}

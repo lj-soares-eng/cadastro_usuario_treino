@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -56,12 +57,28 @@ export class UsersService {
     if (data.name) {
       data.name = data.name.trim();
     }
-    const user = await this.prisma.user.update({
-      where: { id },
-      data,
-    });
-    const { password: _p, ...safe } = user;
-    return safe;
+    try {
+      const user = await this.prisma.user.update({
+        where: { id },
+        data,
+      });
+      const { password: _p, ...safe } = user;
+      return safe;
+    } catch (e) {
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2002'
+      ) {
+        throw new ConflictException('Este e-mail já está cadastrado');
+      }
+      if (
+        e instanceof Prisma.PrismaClientKnownRequestError &&
+        e.code === 'P2025'
+      ) {
+        throw new NotFoundException('Usuário não encontrado');
+      }
+      throw e;
+    }
   }
 
   async remove(id: number) {

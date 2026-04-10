@@ -57,7 +57,11 @@ export default function WelcomePage() {
       <div className={`${authCardClass} max-w-lg`}>
         <h1 className={authTitleClass}>Bem vindo, {userName}!</h1>
         <div className="mt-6 flex flex-col gap-3">
-          <button className={authSubmitClass} type="button">
+          <button
+            className={authSubmitClass}
+            onClick={() => navigate('/profile/edit')}
+            type="button"
+          >
             Editar perfil
           </button>
           <button

@@ -1,0 +1,24 @@
+Sugestão de ações a serem monitoradas por um adm
+
+Contas e autenticação
+    • Login bem-sucedido e falha de login (e-mail alvo, IP, horário; sem guardar senha).
+    • Logout (opcional; útil para rastrear sessão).
+    • Registro de novo usuário (quem criou a conta — o próprio fluxo público).
+    • Alteração de e-mail ou nome (antes/depois ou só “campo alterado”).
+    • Redefinição/troca de senha (evento genérico, sem dados sensíveis).
+    • Exclusão de conta (qual usuário foi removido e por quem — autoexclusão vs. admin).
+Ações administrativas (quando o admin puder fazer mais que um usuário comum)
+    • Promoção/rebaixamento de papel (user → admin e o contrário).
+    • Bloqueio/desbloqueio de usuário (se existir).
+    • Visualização de dados sensíveis no painel (ex.: “admin abriu detalhe do usuário X”) — útil em ambientes com compliance.
+    • Exportação de dados (CSV, relatório) — quem exportou, quando, escopo.
+Uso do sistema (produto / operação)
+    • Picos de cadastros ou logins (agregado ou lista de eventos recentes).
+    • Erros frequentes no front/API ligados a contas (ex.: muitos 401 em /auth/me).
+    • Conexões tempo real (se houver WebSocket): quantos admins ou operadores conectados, últimos eventos broadcast.
+Segurança
+    • Muitas falhas de login no mesmo e-mail ou IP.
+    • Acessos negados a rotas admin (403) — pode indicar tentativa de escalação.
+    • Mudanças fora do horário ou em sequência suspeita (opcional, regra de negócio).
+O que guardar em cada evento (mínimo útil)
+    • Quem (actorId — admin ou usuário), o quê (action), alvo (targetUserId ou recurso), quando (timestamp), contexto (IP, user-agent, requestId se tiver).

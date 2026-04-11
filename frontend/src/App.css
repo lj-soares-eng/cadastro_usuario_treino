@@ -16,10 +16,11 @@
     outline-offset: 2px;
   }
 }
-
+/* Estilos para o hero. */
+/* Posiciona o hero de forma relativa. */
 .hero {
   position: relative;
-
+/* Estilos para os elementos base, framework e vite. */
   .base,
   .framework,
   .vite {
@@ -27,17 +28,20 @@
     margin: 0 auto;
   }
 
+  /* Estilos para o elemento base. */
   .base {
     width: 170px;
     position: relative;
     z-index: 0;
   }
 
+  /* Estilos para os elementos framework e vite. */
   .framework,
   .vite {
     position: absolute;
   }
 
+  /* Estilos para o elemento framework. */
   .framework {
     z-index: 1;
     top: 34px;
@@ -46,6 +50,7 @@
       scale(1.4);
   }
 
+  /* Estilos para o elemento vite. */
   .vite {
     z-index: 0;
     top: 107px;
@@ -56,6 +61,7 @@
   }
 }
 
+/* Estilos para o elemento center. */
 #center {
   display: flex;
   flex-direction: column;
@@ -70,11 +76,13 @@
   }
 }
 
+/* Estilos para o elemento next-steps. */
 #next-steps {
   display: flex;
   border-top: 1px solid var(--border);
   text-align: left;
 
+  /* Estilos para os elementos filhos de next-steps. */
   & > div {
     flex: 1 1 0;
     padding: 32px;
@@ -83,6 +91,7 @@
     }
   }
 
+  /* Estilos para o elemento icon. */
   .icon {
     margin-bottom: 16px;
     width: 22px;
@@ -95,6 +104,7 @@
   }
 }
 
+/* Estilos para o elemento docs. */
 #docs {
   border-right: 1px solid var(--border);
 
@@ -104,7 +114,8 @@
   }
 }
 
-#next-steps ul {
+/* Estilos para a lista de next-steps. */
+  #next-steps ul {
   list-style: none;
   padding: 0;
   display: flex;
@@ -153,6 +164,7 @@
   }
 }
 
+/* Estilos para o elemento spacer. */
 #spacer {
   height: 88px;
   border-top: 1px solid var(--border);
@@ -161,10 +173,12 @@
   }
 }
 
+/* Estilos para o elemento ticks. */
 .ticks {
   position: relative;
   width: 100%;
 
+  /* Estilos para os elementos before e after. */
   &::before,
   &::after {
     content: '';
@@ -173,10 +187,13 @@
     border: 5px solid transparent;
   }
 
+  /* Estilos para o elemento before. */
   &::before {
     left: 0;
     border-left-color: var(--border);
   }
+
+  /* Estilos para o elemento after. */
   &::after {
     right: 0;
     border-right-color: var(--border);

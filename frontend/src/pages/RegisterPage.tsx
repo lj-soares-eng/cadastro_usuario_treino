@@ -11,21 +11,21 @@ import {
   authSubtitleClass,
   authTitleClass,
 } from '../authStyles'
-
+/* Validacoes de campos */
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const NAME_MIN = 2
 const NAME_MAX = 40
 const PASSWORD_MIN = 6
 const PASSWORD_MAX = 20
-
+/* Tipos de erros */
 type FieldErrors = {
   name?: string
   email?: string
   password?: string
   confirmPassword?: string
 }
-
+/* Validacao de campos */
 function validateFields(
   name: string,
   email: string,
@@ -35,7 +35,7 @@ function validateFields(
   const errors: FieldErrors = {}
   const trimmedName = name.trim()
   const trimmedEmail = email.trim()
-
+  /* Validacao de nome */
   if (!trimmedName) {
     errors.name = 'Informe o nome'
   } else if (trimmedName.length < NAME_MIN) {
@@ -44,12 +44,14 @@ function validateFields(
     errors.name = `O nome deve ter no máximo ${NAME_MAX} caracteres`
   }
 
+  /* Validacao de email */
   if (!trimmedEmail) {
     errors.email = 'Informe o e-mail'
   } else if (!emailRe.test(trimmedEmail)) {
     errors.email = 'E-mail inválido'
   }
 
+  /* Validacao de senha */
   if (!password) {
     errors.password = 'Informe a senha'
   } else if (password.length < PASSWORD_MIN) {
@@ -58,6 +60,7 @@ function validateFields(
     errors.password = `A senha deve ter no máximo ${PASSWORD_MAX} caracteres`
   }
 
+  /* Validacao de confirmacao de senha */
   if (!confirmPassword) {
     errors.confirmPassword = 'Confirme a senha'
   } else if (confirmPassword !== password) {
@@ -67,13 +70,16 @@ function validateFields(
   return errors
 }
 
+/* Classe de borda para campos com erro */
 function fieldRingClass(hasError: boolean): string {
   return hasError
     ? 'border-red-600 dark:border-red-400 focus:border-red-600 focus:ring-red-600/30 dark:focus:border-red-400 dark:focus:ring-red-400/30'
     : ''
 }
 
+/* Pagina de registro */
 export default function RegisterPage() {
+  /* Estados */
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -83,6 +89,7 @@ export default function RegisterPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  /* Funcao de submit do formulario */
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setFormError(null)
@@ -115,6 +122,7 @@ export default function RegisterPage() {
       })
   }
 
+  /* Renderizacao do componente */
   return (
     <div className={authShellClass}>
       <div className={`${authCardClass} max-w-105`}>
@@ -123,6 +131,7 @@ export default function RegisterPage() {
           Preencha os dados para criar sua conta.
         </p>
 
+        {/* Mensagem de sucesso */}
         {successMessage ? (
           <p
             className="mb-4 rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-2 text-sm text-emerald-800 dark:text-emerald-200"
@@ -135,6 +144,7 @@ export default function RegisterPage() {
           </p>
         ) : null}
 
+        {/* Mensagem de erro */}
         {formError ? (
           <p
             className="mb-4 rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-800 dark:text-red-200"
@@ -144,7 +154,9 @@ export default function RegisterPage() {
           </p>
         ) : null}
 
+        {/* Formulario de registro */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+          {/* Campo de nome */}
           <div className="flex flex-col gap-1.5">
             <label
               className="text-sm font-medium text-[#141824] dark:text-[#eef0f5]"
@@ -152,6 +164,7 @@ export default function RegisterPage() {
             >
               Nome
             </label>
+            {/* Campo de nome */}
             <input
               id="register-name"
               className={`${authInputClass} ${fieldRingClass(Boolean(fieldErrors.name))}`}
@@ -177,6 +190,7 @@ export default function RegisterPage() {
             ) : null}
           </div>
 
+          {/* Campo de email */}
           <div className="flex flex-col gap-1.5">
             <label
               className="text-sm font-medium text-[#141824] dark:text-[#eef0f5]"
@@ -213,6 +227,7 @@ export default function RegisterPage() {
             ) : null}
           </div>
 
+          {/* Campo de senha */}
           <div className="flex flex-col gap-1.5">
             <label
               className="text-sm font-medium text-[#141824] dark:text-[#eef0f5]"
@@ -249,6 +264,7 @@ export default function RegisterPage() {
             ) : null}
           </div>
 
+          {/* Campo de confirmacao de senha */}
           <div className="flex flex-col gap-1.5">
             <label
               className="text-sm font-medium text-[#141824] dark:text-[#eef0f5]"
@@ -290,6 +306,7 @@ export default function RegisterPage() {
             ) : null}
           </div>
 
+          {/* Botao de submit */}
           <button
             className={`${authSubmitClass} disabled:cursor-not-allowed disabled:opacity-60`}
             type="submit"
@@ -299,6 +316,7 @@ export default function RegisterPage() {
           </button>
         </form>
 
+        {/* Link de login */}
         <p className={authFooterClass}>
           Já tem conta? <Link className={authLinkClass} to="/login">Entrar</Link>
         </p>

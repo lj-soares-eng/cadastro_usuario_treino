@@ -1,8 +1,9 @@
+/* Função para buscar a URL da API. */
 export function apiBase(): string {
   return import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 }
 
-/** Fetch para a API com cookies (JWT httpOnly). */
+/* Função para fazer o fetch para a API com cookies (JWT httpOnly). */
 export function apiFetch(path: string, init?: RequestInit): Promise<Response> {
   return fetch(`${apiBase()}${path}`, {
     ...init,
@@ -10,6 +11,7 @@ export function apiFetch(path: string, init?: RequestInit): Promise<Response> {
   })
 }
 
+/* Função para formatar o erro da API. */
 export function formatApiError(data: { message?: string | string[] }): string {
   const { message } = data
   if (Array.isArray(message)) {

@@ -34,7 +34,6 @@ export async function registerUser(
   })
 /* Tenta converter a resposta para JSON. Se não conseguir, retorna um objeto vazio. */
   const data: unknown = await res.json().catch(() => ({}))
-/* Se o status da resposta não for ok, lança um erro com o formato do erro da API. */
   if (!res.ok) {
     throw new Error(
       formatApiError(data as { message?: string | string[] }),
@@ -55,9 +54,7 @@ export async function updateUser(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
   })
-/* Tenta converter a resposta para JSON. Se não conseguir, retorna um objeto vazio. */
   const data: unknown = await res.json().catch(() => ({}))
-/* Se o status da resposta não for ok, lança um erro com o formato do erro da API. */
   if (!res.ok) {
     throw new Error(
       formatApiError(data as { message?: string | string[] }),
@@ -69,11 +66,9 @@ export async function updateUser(
 
 /* Função para deletar um usuário. */
 export async function deleteUser(userId: number): Promise<void> {
-  /* Faz o fetch para o endpoint de deletar usuário. */
   const res = await apiFetch(`/users/${userId}`, {
     method: 'DELETE',
   })
-/* Se o status da resposta não for ok, lança um erro com o formato do erro da API. */
   if (!res.ok && res.status !== 204) {
     const data: unknown = await res.json().catch(() => ({}))
     /* Converte a resposta para o tipo RegisterSuccess. */

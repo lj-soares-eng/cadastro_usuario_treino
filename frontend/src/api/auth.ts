@@ -36,8 +36,7 @@ export async function loginRequest(
   return data as LoginSuccess
 }
 
-/* Tipo de dado para a resposta do login. Uma vez feito o login, o token é armazenado em cookie.
-Essa função é usada para buscar as informações do usuário logado.*/
+/* Tipo de dado para a resposta do login. Uma vez feito o login, o token é armazenado em cookie.*/
 export type MeResponse = {
   id: number
   name: string

@@ -31,6 +31,7 @@ export default function EditPage() {
     )
   }
 
+  /* Retorno do componente */
   return (
     <div className="auth-shell">
       <div className="auth-card max-w-105">
@@ -38,6 +39,7 @@ export default function EditPage() {
         <p className="auth-subtitle">
           Atualize nome, e-mail e, se quiser, sua senha.
         </p>
+        
         {/* Mensagem de sucesso */}
         {successMessage ? (
           <AlertMessage variant="success">{successMessage}</AlertMessage>

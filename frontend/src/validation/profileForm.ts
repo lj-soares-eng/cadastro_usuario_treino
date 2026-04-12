@@ -7,20 +7,6 @@ export const NAME_MAX = 40
 export const PASSWORD_MIN = 6
 export const PASSWORD_MAX = 20
 
-/* Tipo de dado para os erros do formulário de perfil */
-export type FieldErrors = {
-  name?: string
-  email?: string
-  password?: string
-  confirmPassword?: string
-}
-
-/* Tipo de dado para os erros do formulário de login */
-export type LoginFieldErrors = {
-  email?: string
-  password?: string
-}
-
 /* Tipo de dado para os valores do formulário de perfil */
 export type ProfileFormValues = {
   name: string
@@ -28,6 +14,12 @@ export type ProfileFormValues = {
   password: string
   confirmPassword: string
 }
+
+/* Tipo de dado para os erros do formulário de perfil */
+export type FieldErrors = Partial<ProfileFormValues>
+
+/* Tipo de dado para os erros do formulário de login */
+export type LoginFieldErrors = Partial<Pick<ProfileFormValues, 'email' | 'password'>>
 
 /* Tipo de dado para as regras de validação */
 type Rule = {test: boolean, message: string}

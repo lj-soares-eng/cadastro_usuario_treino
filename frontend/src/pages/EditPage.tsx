@@ -8,10 +8,10 @@ import {
   authSubtitleClass,
   authTitleClass,
 } from '../authStyles'
-import EditProfileForm from './EditProfile/EditProfileForm'
-import { useEditProfileForm } from './EditProfile/useEditProfile'
+import EditProfileForm from '../components/EditProfileForm'
+import { useEditProfileForm } from '../validation/useEditProfile'
 
-export default function EditProfile() {
+export default function EditPage() {
   const {
     loading,
     name,

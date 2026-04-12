@@ -1,11 +1,11 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { fetchMe } from '../../api/auth'
-import { updateUser } from '../../api/users'
+import { fetchMe } from '../api/auth'
+import { updateUser } from '../api/users'
 import {
   type FieldErrors,
   validateProfileForm,
-} from '../../validation/profileForm'
+} from './profileForm'
 
 type EditableField = 'name' | 'email' | 'password' | 'confirmPassword'
 

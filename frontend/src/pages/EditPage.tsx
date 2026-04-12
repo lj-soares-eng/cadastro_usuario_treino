@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import AlertMessage from '../../components/AlertMessage'
+import AlertMessage from '../components/AlertMessage'
 import {
   authCardClass,
   authFooterClass,
@@ -7,9 +7,9 @@ import {
   authShellClass,
   authSubtitleClass,
   authTitleClass,
-} from '../../authStyles'
-import EditProfileForm from './EditProfileForm'
-import { useEditProfileForm } from './useEditProfile'
+} from '../authStyles'
+import EditProfileForm from './EditProfile/EditProfileForm'
+import { useEditProfileForm } from './EditProfile/useEditProfile'
 
 export default function EditProfile() {
   const {

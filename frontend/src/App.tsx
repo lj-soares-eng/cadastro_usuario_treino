@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import EditProfilePage from './pages/EditProfilePage'
+import EditPage from './pages/EditPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import WelcomePage from './pages/WelcomePage'
@@ -10,7 +10,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Rotas da aplicacao */}
+        {/* Rotas da aplicacao, redireciona para login se nao estiver logado */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         {/* Pagina de login */}
         <Route path="/login" element={<LoginPage />} />
@@ -19,7 +19,7 @@ export default function App() {
         {/* Pagina de boas vindas */}
         <Route path="/welcome" element={<WelcomePage />} />
         {/* Pagina de edicao de perfil */}
-        <Route path="/profile/edit" element={<EditProfilePage />} />
+        <Route path="/profile/edit" element={<EditPage />} />
       </Routes>
     </BrowserRouter>
   )

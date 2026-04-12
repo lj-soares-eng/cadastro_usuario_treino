@@ -1,6 +1,7 @@
 import type { FormEventHandler } from 'react'
 import AuthTextField from './AuthTextField'
-import { NAME_MAX, type FieldErrors } from '../validation/profileForm'
+import { type FieldErrors } from '../validation/profileForm'
+import { NAME_MAX } from '../validation/validators'
 
 /* Tipo de dado para as props do componente EditProfileForm */
 type EditProfileFormProps = {

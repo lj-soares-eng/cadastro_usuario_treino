@@ -4,10 +4,10 @@ import AlertMessage from '../components/AlertMessage'
 import AuthTextField from '../components/AuthTextField'
 import { registerUser } from '../api/users'
 import {
-  NAME_MAX,
   type FieldErrors,
   validateProfileForm,
 } from '../validation/profileForm'
+import { NAME_MAX } from '../validation/validators'
 
 /* Pagina de registro */
 export default function RegisterPage() {

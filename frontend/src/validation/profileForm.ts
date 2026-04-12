@@ -1,11 +1,4 @@
-/* Expressão regular para validar e-mail */
-export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-/* Valores mínimos e máximos para nome e senha */
-export const NAME_MIN = 2
-export const NAME_MAX = 40
-export const PASSWORD_MIN = 6
-export const PASSWORD_MAX = 20
+import { validateEmailField, validatePasswordField, validateNameField, validateConfirmPasswordField } from "./validators"
 
 /* Tipo de dado para os valores do formulário de perfil */
 export type ProfileFormValues = {
@@ -21,14 +14,6 @@ export type FieldErrors = Partial<ProfileFormValues>
 /* Tipo de dado para os erros do formulário de login */
 export type LoginFieldErrors = Partial<Pick<ProfileFormValues, 'email' | 'password'>>
 
-/* Tipo de dado para as regras de validação */
-type Rule = {test: boolean, message: string}
-
-/* Função auxiliar para pegar o primeiro erro de uma lista de regras*/ 
-function getFirstError(rules: Rule[]): string | undefined{
-  return rules.find(rule => rule.test)?.message
-}
-
 /* Tipo de dado para o modo de validação */
 type ValidationMode = 'register' | 'edit'
 
@@ -41,35 +26,38 @@ export function validateProfileForm(
   const trimmedName = values.name.trim()
   const trimmedEmail = values.email.trim()
   const passwordRequired = mode === 'register'
+  let passwordError: string | void = undefined;
+  let confirmPasswordError: string | void = undefined;
 
   /* Validacao do nome */
-  errors.name = getFirstError([
-    {test: !trimmedName, message: `Informe o nome`},
-    {test: trimmedName.length < NAME_MIN, message: `Mínimo de ${NAME_MIN} caracteres`},
-    {test: trimmedName.length > NAME_MAX, message: `Máximo de ${NAME_MAX} caracteres`}
-  ])
+  const nameError = validateNameField(trimmedName)
 
   /* Validacao do e-mail */
-  errors.email = getFirstError([
-    {test: !trimmedEmail, message: `Informe o e-mail`},
-    {test: !EMAIL_RE.test(trimmedEmail), message: `E-mail inválido`}
-  ])
+  const emailError = validateEmailField(trimmedEmail)
+
 
   /* Validacao da senha */
-  errors.password = getFirstError([
-    {test: !values.password, message: `Informe a senha`},
-    {test: values.password.length < PASSWORD_MIN, message: `Mínimo de ${PASSWORD_MIN} caracteres`},
-    {test: values.password.length > PASSWORD_MAX, message: `Máximo de ${PASSWORD_MAX} caracteres`}
-  ])
+  if (passwordRequired || values.password) {
+    passwordError = validatePasswordField(values.password)
+  }
 
   /* Validacao da confirmacao de senha */
   if (passwordRequired || values.password || values.confirmPassword) {
-    errors.confirmPassword = getFirstError([
-      {test: !values.confirmPassword, message: passwordRequired ? `Confirme a senha` : `Confirme a nova senha`},
-      {test: values.confirmPassword !== values.password, message: `As senhas não coincidem`}
-    ])
+    confirmPasswordError = validateConfirmPasswordField(values.confirmPassword, values.password)
   }
 
+  if (nameError) {
+    errors.name = nameError
+  }
+  if (emailError) {
+    errors.email = emailError
+  }   
+  if (passwordError) {
+    errors.password = passwordError
+  }
+  if (confirmPasswordError) {
+    errors.confirmPassword = confirmPasswordError
+  }
   return errors
 }
 
@@ -80,19 +68,20 @@ export function validateLoginForm(
 ): LoginFieldErrors {
   const errors: LoginFieldErrors = {}
   const trimmedEmail = email.trim()
+  let PasswordError: string | void = undefined;
 
   /* Validacao do e-mail */
-  errors.email = getFirstError([
-    {test: !trimmedEmail, message: `Informe o e-mail`},
-    {test: !EMAIL_RE.test(trimmedEmail), message: `E-mail inválido`}
-  ])
+  const loginEmailError = validateEmailField(trimmedEmail)
 
   /* Validacao da senha */
-  errors.password = getFirstError([
-    {test: !password, message: `Informe a senha`},
-    {test: password.length < PASSWORD_MIN, message: `Mínimo de ${PASSWORD_MIN} caracteres`},
-    {test: password.length > PASSWORD_MAX, message: `Máximo de ${PASSWORD_MAX} caracteres`}
-  ])
+  PasswordError = validatePasswordField(password)
 
+  if (loginEmailError) {
+    errors.email = loginEmailError
+  }
+
+  if (PasswordError) {
+    errors.password = PasswordError
+  }
   return errors
 }

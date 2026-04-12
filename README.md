@@ -1,6 +1,11 @@
 ## Descrição
 Um pequeno projeto de cadastro de usuários para treinar minhas habilidades com autenticação usando JWT e Passport.
 
+## Env
+Esse exercício está sendo executado numa máquina Lubuntu Linux, usando banco Postgres instalado via snap,
+o app é feito em React, TypeScript e Nest com Node. O Nest está usando Express por baixo, como padrão
+do framework.
+
 ## Setup do projeto
 
 ```bash
@@ -39,6 +44,11 @@ $ npm run test:cov
 $ npm install -g @nestjs/mau
 $ mau deploy
 ```
+
+## Obs
+Eu não estou usando acentuação nos commits por uma questão de preferencia.
+Tenho o hábito de não colocar pontuação nas coisas que eu escrevo no 
+terminal.
 
 ## License
 

@@ -18,10 +18,7 @@ export default tseslint.config(
         ...globals.jest,
       },
       sourceType: 'commonjs',
-      parserOptions: {
-        projectService: {
-          allowDefaultProject: ['test/*.ts'],
-        },
+      parserOptions: {        
         tsconfigRootDir: import.meta.dirname,
       },
     },

@@ -23,8 +23,8 @@ describe('AppController', () => {
   /* describe para testar a raiz da aplicacao */
   describe('root', () => {
     /* Teste para verificar se a raiz da aplicacao retorna "Hello World!" */
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return "O servidor está rodando!"', () => {
+      expect(appController.getHello()).toBe('O servidor está rodando!');
     });
   });
 });

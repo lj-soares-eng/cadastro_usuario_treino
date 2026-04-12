@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma.service';
 import { UsersService } from './users.service';
+import { ConflictException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 
 const prismaMock = {
   user: {
@@ -11,6 +13,15 @@ const prismaMock = {
     delete: jest.fn(),
   },
 };
+
+function prismaUniqueEmailError(): Prisma.PrismaClientKnownRequestError {
+  return new Prisma.PrismaClientKnownRequestError(
+    'Unique constraint failed on the fields: (`email`)', {
+    code: 'P2002',
+    clientVersion: 'test',
+    meta: { modelName: 'User', target: ['email']},
+  });
+}
 
 /* Teste de unidade para o servico de usuarios */ 
 describe('UsersService', () => {
@@ -54,12 +65,14 @@ describe('UsersService', () => {
         password: 'hash-no-banco',
       });
 
+      /* Cria o usuario */
       const result = await service.create({
         name: 'Lucas Soares',
         email: 'lucasdejesussoares@gmail.com',
         password: '123456',
       });
 
+      /* Verifica se o resultado é o esperado */
       expect(result).toEqual({
         id: 1,
         name: 'Lucas Soares',
@@ -68,5 +81,23 @@ describe('UsersService', () => {
 
       expect(prismaMock.user.create).toHaveBeenCalled();
     }
-  )
+  );
+
+  it('Create deve lançar ConflictException quando o e-mail já está cadastrado',
+    async () => {
+
+      /* Mock para erro de usuario ja cadastrado */
+      prismaMock.user.create.mockRejectedValue(
+        prismaUniqueEmailError());
+
+      await expect(service.create({
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+        password: '123456',
+      }),
+    ).rejects.toThrow(ConflictException);
+
+      expect(prismaMock.user.create).toHaveBeenCalled();
+    }
+  );
 });

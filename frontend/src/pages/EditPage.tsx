@@ -3,6 +3,7 @@ import AlertMessage from '../components/AlertMessage'
 import EditProfileForm from '../components/EditProfileForm'
 import { useEditProfileForm } from '../validation/useEditProfile'
 
+/* Componente EditPage */
 export default function EditPage() {
   const {
     loading,

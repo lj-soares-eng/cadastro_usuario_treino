@@ -29,6 +29,14 @@ export type ProfileFormValues = {
   confirmPassword: string
 }
 
+/* Tipo de dado para as regras de validação */
+type Rule = {test: boolean, message: string}
+
+/* Função auxiliar para pegar o primeiro erro de uma lista de regras*/ 
+function getFirstError(rules: Rule[]): string | undefined{
+  return rules.find(rule => rule.test)?.message
+}
+
 /* Tipo de dado para o modo de validação */
 type ValidationMode = 'register' | 'edit'
 
@@ -43,41 +51,31 @@ export function validateProfileForm(
   const passwordRequired = mode === 'register'
 
   /* Validacao do nome */
-  if (!trimmedName) {
-    errors.name = 'Informe o nome'
-  } else if (trimmedName.length < NAME_MIN) {
-    errors.name = `O nome deve ter pelo menos ${NAME_MIN} caracteres`
-  } else if (trimmedName.length > NAME_MAX) {
-    errors.name = `O nome deve ter no máximo ${NAME_MAX} caracteres`
-  }
+  errors.name = getFirstError([
+    {test: !trimmedName, message: `Informe o nome`},
+    {test: trimmedName.length < NAME_MIN, message: `Mínimo de ${NAME_MIN} caracteres`},
+    {test: trimmedName.length > NAME_MAX, message: `Máximo de ${NAME_MAX} caracteres`}
+  ])
 
   /* Validacao do e-mail */
-  if (!trimmedEmail) {
-    errors.email = 'Informe o e-mail'
-  } else if (!EMAIL_RE.test(trimmedEmail)) {
-    errors.email = 'E-mail inválido'
-  }
+  errors.email = getFirstError([
+    {test: !trimmedEmail, message: `Informe o e-mail`},
+    {test: !EMAIL_RE.test(trimmedEmail), message: `E-mail inválido`}
+  ])
 
   /* Validacao da senha */
-  if (passwordRequired || values.password) {
-    if (!values.password) {
-      errors.password = 'Informe a senha'
-    } else if (values.password.length < PASSWORD_MIN) {
-      errors.password = `A senha deve ter pelo menos ${PASSWORD_MIN} caracteres`
-    } else if (values.password.length > PASSWORD_MAX) {
-      errors.password = `A senha deve ter no máximo ${PASSWORD_MAX} caracteres`
-    }
-  }
+  errors.password = getFirstError([
+    {test: !values.password, message: `Informe a senha`},
+    {test: values.password.length < PASSWORD_MIN, message: `Mínimo de ${PASSWORD_MIN} caracteres`},
+    {test: values.password.length > PASSWORD_MAX, message: `Máximo de ${PASSWORD_MAX} caracteres`}
+  ])
 
   /* Validacao da confirmacao de senha */
   if (passwordRequired || values.password || values.confirmPassword) {
-    if (!values.confirmPassword) {
-      errors.confirmPassword = passwordRequired
-        ? 'Confirme a senha'
-        : 'Confirme a nova senha'
-    } else if (values.confirmPassword !== values.password) {
-      errors.confirmPassword = 'As senhas não coincidem'
-    }
+    errors.confirmPassword = getFirstError([
+      {test: !values.confirmPassword, message: passwordRequired ? `Confirme a senha` : `Confirme a nova senha`},
+      {test: values.confirmPassword !== values.password, message: `As senhas não coincidem`}
+    ])
   }
 
   return errors
@@ -92,18 +90,17 @@ export function validateLoginForm(
   const trimmedEmail = email.trim()
 
   /* Validacao do e-mail */
-  if (!trimmedEmail) {
-    errors.email = 'Informe o e-mail'
-  } else if (!EMAIL_RE.test(trimmedEmail)) {
-    errors.email = 'E-mail inválido'
-  }
+  errors.email = getFirstError([
+    {test: !trimmedEmail, message: `Informe o e-mail`},
+    {test: !EMAIL_RE.test(trimmedEmail), message: `E-mail inválido`}
+  ])
 
   /* Validacao da senha */
-  if (!password) {
-    errors.password = 'Informe a senha'
-  } else if (password.length < PASSWORD_MIN) {
-    errors.password = `A senha deve ter pelo menos ${PASSWORD_MIN} caracteres`
-  }
+  errors.password = getFirstError([
+    {test: !password, message: `Informe a senha`},
+    {test: password.length < PASSWORD_MIN, message: `Mínimo de ${PASSWORD_MIN} caracteres`},
+    {test: password.length > PASSWORD_MAX, message: `Máximo de ${PASSWORD_MAX} caracteres`}
+  ])
 
   return errors
 }

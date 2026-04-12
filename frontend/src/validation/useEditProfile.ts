@@ -34,6 +34,12 @@ export function useEditProfileForm() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   /* Estado para o envio do formulário */
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const fieldSetters: Record<EditableField, (value: string) => void> = {
+    name: setName,
+    email: setEmail,
+    password: setPassword,
+    confirmPassword: setConfirmPassword,
+  }
 
   /* Efeito para buscar o usuário logado */
   useEffect(() => {
@@ -74,24 +80,7 @@ export function useEditProfileForm() {
   /* Função para mudar o valor de um campo */
   function onFieldChange(field: EditableField, value: string) {
     /* Switch para mudar o valor de um campo */
-    switch (field) {
-      /* Mudar o valor do nome */
-      case 'name':
-        setName(value)
-        break
-      /* Mudar o valor do e-mail */
-      case 'email':
-        setEmail(value)
-        break
-      /* Mudar o valor da senha */
-      case 'password':
-        setPassword(value)
-        break
-      /* Mudar o valor da confirmação de senha */
-      case 'confirmPassword':
-        setConfirmPassword(value)
-        break
-    }
+    fieldSetters[field]?.(value)
 
     /* Se o campo tem erro, limpa o erro */
     if (fieldErrors[field]) {

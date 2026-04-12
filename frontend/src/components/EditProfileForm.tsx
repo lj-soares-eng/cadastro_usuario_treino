@@ -2,6 +2,7 @@ import type { FormEventHandler } from 'react'
 import AuthTextField from './AuthTextField'
 import { NAME_MAX, type FieldErrors } from '../validation/profileForm'
 
+/* Tipo de dado para as props do componente EditProfileForm */
 type EditProfileFormProps = {
   name: string
   email: string
@@ -16,6 +17,7 @@ type EditProfileFormProps = {
   onSubmit: FormEventHandler<HTMLFormElement>
 }
 
+/* Componente EditProfileForm */
 export default function EditProfileForm({
   name,
   email,
@@ -26,8 +28,11 @@ export default function EditProfileForm({
   onFieldChange,
   onSubmit,
 }: EditProfileFormProps) {
+  
+  /* Retorno do componente */
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit} noValidate>
+      {/* Campo de nome */}
       <AuthTextField
         id="edit-name"
         label="Nome"
@@ -40,6 +45,7 @@ export default function EditProfileForm({
         maxLength={NAME_MAX + 10}
       />
 
+      {/* Campo de e-mail */}
       <AuthTextField
         id="edit-email"
         label="E-mail"
@@ -52,6 +58,7 @@ export default function EditProfileForm({
         placeholder="user@provider.com"
       />
 
+      {/* Campo de nova senha */}
       <AuthTextField
         id="edit-password"
         label="Nova senha (opcional)"
@@ -64,6 +71,7 @@ export default function EditProfileForm({
         placeholder="Deixe em branco para manter"
       />
 
+      {/* Campo de confirmar nova senha */}
       <AuthTextField
         id="edit-confirm"
         label="Confirmar nova senha"
@@ -76,6 +84,7 @@ export default function EditProfileForm({
         placeholder="Repita a nova senha"
       />
 
+      {/* Botao de salvar alterações */}
       <button
         className="btn-primary is-disabled"
         type="submit"

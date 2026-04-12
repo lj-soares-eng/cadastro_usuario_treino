@@ -68,11 +68,14 @@ export default function LoginPage() {
         <h1 className="auth-title">Entrar</h1>
         <p className="auth-subtitle">Acesse com seu e-mail e senha.</p>
 
+        {/* Mensagem de erro */}
         {formError ? (
           <AlertMessage variant="error">{formError}</AlertMessage>
         ) : null}
-
+        {/* Formulario de login */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+
+          {/* Campo de e-mail */}
           <AuthTextField
             id="login-email"
             label="E-mail"
@@ -90,6 +93,7 @@ export default function LoginPage() {
             placeholder="user@provider.com"
           />
 
+          {/* Campo de senha */}
           <AuthTextField
             id="login-password"
             label="Senha"
@@ -107,6 +111,7 @@ export default function LoginPage() {
             placeholder="••••••"
           />
 
+          {/* Botao de login */}
           <button
             className="btn-primary is-disabled"
             type="submit"
@@ -121,6 +126,5 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
-    /* Fim do formulário. */
   )
 }

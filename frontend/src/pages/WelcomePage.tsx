@@ -94,12 +94,12 @@ export default function WelcomePage() {
   return (
     <div className="auth-shell">
       <div className="auth-card max-w-lg">
+        {/* Titulo da pagina */}
         <h1 className="auth-title">Bem vindo, {userName}!</h1>
         {/* Mensagem de erro */}
         {formError ? (
           <AlertMessage variant="error">{formError}</AlertMessage>
         ) : null}
-        {/* Botoes de perfil e deletar conta */}
         <div className="mt-6 flex flex-col gap-3">
           {/* Botao de editar perfil */}
           <button

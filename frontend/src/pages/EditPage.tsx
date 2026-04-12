@@ -37,12 +37,14 @@ export default function EditPage() {
         <p className="auth-subtitle">
           Atualize nome, e-mail e, se quiser, sua senha.
         </p>
-
+        {/* Mensagem de sucesso */}
         {successMessage ? (
           <AlertMessage variant="success">{successMessage}</AlertMessage>
         ) : null}
+        {/* Mensagem de erro */}
         {formError ? <AlertMessage variant="error">{formError}</AlertMessage> : null}
 
+        {/* Formulario de edicao de perfil */}
         <EditProfileForm
           name={name}
           email={email}
@@ -54,6 +56,7 @@ export default function EditPage() {
           onSubmit={handleSubmit}
         />
 
+        {/* Botao de voltar para a tela inicial */}
         <p className="auth-footer">
           <Link className="auth-link" to="/welcome">
             Voltar para a tela inicial

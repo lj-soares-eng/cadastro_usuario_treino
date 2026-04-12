@@ -20,7 +20,7 @@ export default function RegisterPage() {
   const [formError, setFormError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-
+/* Funcao para atualizar o campo */
   function updateField<K extends keyof FieldErrors>(
     value: string,
     setValue: (next: string) => void,
@@ -32,6 +32,7 @@ export default function RegisterPage() {
     }
   }
 
+  /* Funcao para submeter o formulario */
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setFormError(null)
@@ -46,6 +47,7 @@ export default function RegisterPage() {
       return
     }
 
+    /* Setando o estado de submissao */
     setIsSubmitting(true)
     void registerUser({
       name: name.trim().replace(/\s+/g, ' '),
@@ -76,6 +78,7 @@ export default function RegisterPage() {
           Preencha os dados para criar sua conta.
         </p>
 
+        {/* Mensagem de sucesso */}
         {successMessage ? (
           <AlertMessage variant="success">
             {successMessage}{' '}
@@ -85,11 +88,13 @@ export default function RegisterPage() {
           </AlertMessage>
         ) : null}
 
+        {/* Mensagem de erro */}
         {formError ? (
           <AlertMessage variant="error">{formError}</AlertMessage>
         ) : null}
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+          {/* Campo de nome */}
           <AuthTextField
             id="register-name"
             label="Nome"
@@ -102,6 +107,7 @@ export default function RegisterPage() {
             maxLength={NAME_MAX + 10}
           />
 
+          {/* Campo de e-mail */}
           <AuthTextField
             id="register-email"
             label="E-mail"
@@ -114,6 +120,7 @@ export default function RegisterPage() {
             placeholder="user@provider.com"
           />
 
+          {/* Campo de senha */}
           <AuthTextField
             id="register-password"
             label="Senha"
@@ -126,6 +133,7 @@ export default function RegisterPage() {
             placeholder="Mínimo 6 caracteres"
           />
 
+          {/* Campo de confirmar senha */}
           <AuthTextField
             id="register-confirm"
             label="Confirmar senha"
@@ -140,6 +148,7 @@ export default function RegisterPage() {
             placeholder="Repita a senha"
           />
 
+          {/* Botao de criar conta */}
           <button
             className="btn-primary is-disabled"
             type="submit"
@@ -149,6 +158,7 @@ export default function RegisterPage() {
           </button>
         </form>
 
+        {/* Link para a pagina de login */}
         <p className="auth-footer">
           Já tem conta? <Link className="auth-link" to="/login">Entrar</Link>
         </p>

@@ -1,3 +1,4 @@
+/* Tipo de dado para as props do componente AuthTextField */
 type AuthTextFieldProps = {
   id: string
   label: string
@@ -11,6 +12,7 @@ type AuthTextFieldProps = {
   maxLength?: number
 }
 
+/* Componente AuthTextField */
 export default function AuthTextField({
   id,
   label,
@@ -23,17 +25,23 @@ export default function AuthTextField({
   placeholder,
   maxLength,
 }: AuthTextFieldProps) {
+  /* Variável para o id do erro */
   const errorId = `${id}-error`
+  /* Variável para verificar se o campo tem erro */
   const hasError = Boolean(error)
 
+  
+  /* Retorno do componente */
   return (
     <div className="flex flex-col gap-1.5">
+      {/* Label do campo */}
       <label
         className="auth-label"
         htmlFor={id}
       >
         {label}
       </label>
+      {/* Input do campo */}
       <input
         id={id}
         className={`auth-input ${hasError ? 'has-error' : ''}`}
@@ -47,6 +55,7 @@ export default function AuthTextField({
         aria-invalid={hasError}
         aria-describedby={hasError ? errorId : undefined}
       />
+      {/* Mensagem de erro */}
       {error ? (
         <p id={errorId} className="field-error-text">
           {error}

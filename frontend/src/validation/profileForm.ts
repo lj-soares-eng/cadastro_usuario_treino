@@ -1,4 +1,7 @@
-import { validateEmailField, validatePasswordField, validateNameField, validateConfirmPasswordField } from "./validators"
+import { validateEmailField, 
+         validatePasswordField, 
+         validateNameField, 
+         validateConfirmPasswordField } from "./validators"
 
 /* Tipo de dado para os valores do formulário de perfil */
 export type ProfileFormValues = {

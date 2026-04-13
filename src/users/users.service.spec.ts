@@ -146,7 +146,9 @@ describe('UsersService', () => {
     }
   );
 
+  /* Teste para verificar se o servico Update persiste dados e retorna um usuário sem senha */
   it('Update deve persistir dados e retornar um usuário sem senha', async () => {
+    /* Mock para atualizacao de usuario */
     prismaMock.user.update.mockResolvedValue({
       id: 1,
       name: 'Lucas Soares',
@@ -154,19 +156,25 @@ describe('UsersService', () => {
       password: 'hash-no-banco',
     });
 
+    /* Cria um DTO */
     const dto = {
       name: 'Lucas Soares',
       email: 'lucasdejesussoares@gmail.com',
     };
+    /* Atualiza o usuario */
     const result = await service.update(1, dto);
 
+    /* Verifica se o resultado é o esperado */
     expect(result).toEqual({
       id: 1,
       name: 'Lucas Soares',
       email: 'lucasdejesussoares@gmail.com',
     });
+    /* Verifica se o resultado nao tem a senha */
     expect(result).not.toHaveProperty('password');
+    /* Verifica se o Prisma foi chamado com o id */
 
+    /* Verifica se o Prisma foi chamado com o DTO */
     expect(prismaMock.user.update).toHaveBeenCalledWith({
       where: { id: 1 },
       data: expect.objectContaining({
@@ -176,7 +184,9 @@ describe('UsersService', () => {
     });
   });
 
+  /* Teste para verificar se o servico Update com senha envia hash ao Prisma e normaliza e-mail e nome */
   it('Update com senha envia hash ao Prisma e normaliza e-mail e nome', async () => {
+    /* Mock para atualizacao de usuario */
     prismaMock.user.update.mockResolvedValue({
       id: 1,
       name: 'trim me',
@@ -184,12 +194,14 @@ describe('UsersService', () => {
       password: 'hash-no-banco',
     });
 
+    /* Atualiza o usuario */
     await service.update(1, {
       password: 'novasenha12',
       email: '  A@B.COM ',
       name: '  trim me  ',
     });
 
+    /* Verifica se o Prisma foi chamado com o DTO */
     expect(prismaMock.user.update).toHaveBeenCalledWith({
       where: { id: 1 },
       data: expect.objectContaining({
@@ -198,16 +210,20 @@ describe('UsersService', () => {
         password: expect.any(String),
       }),
     });
+    /* Verifica se a senha nao é a mesma que foi enviada */
     const sent = prismaMock.user.update.mock.calls[0][0].data as {
       password: string;
     };
     expect(sent.password).not.toBe('novasenha12');
   });
 
+  /* Teste para verificar se o servico Update deve lançar ConflictException quando o e-mail já está cadastrado */
   it('Update deve lançar ConflictException quando o e-mail já está cadastrado',
     async () => {
+      /* Mock para erro de usuario ja cadastrado */
       prismaMock.user.update.mockRejectedValue(prismaUniqueEmailError());
 
+      /* Verifica se o ConflictException é lançado */
       await expect(
         service.update(1, {
           name: 'Lucas Soares',
@@ -215,14 +231,18 @@ describe('UsersService', () => {
         }),
       ).rejects.toThrow(ConflictException);
 
+      /* Verifica se o Prisma foi chamado */
       expect(prismaMock.user.update).toHaveBeenCalled();
     },
   );
 
+  /* Teste para verificar se o servico Update deve lançar NotFoundException quando o usuário não é encontrado */
   it('Update deve lançar NotFoundException quando o usuário não é encontrado',
     async () => {
+      /* Mock para erro de usuario nao encontrado */
       prismaMock.user.update.mockRejectedValue(prismaRecordNotFoundError());
 
+      /* Verifica se o NotFoundException é lançado */
       await expect(
         service.update(1, {
           name: 'Lucas Soares',
@@ -230,25 +250,36 @@ describe('UsersService', () => {
         }),
       ).rejects.toThrow(NotFoundException);
 
+      /* Verifica se o Prisma foi chamado */
       expect(prismaMock.user.update).toHaveBeenCalled();
     },
   );
 
+  /* Teste para verificar se o servico Remove deve concluir quando o Prisma deleta o usuário */
   it('Remove deve concluir quando o Prisma deleta o usuário', async () => {
+    /* Mock para deletacao de usuario */
     prismaMock.user.delete.mockResolvedValue(undefined);
 
+    /* Verifica se o Remove deve concluir quando o Prisma deleta o usuário */
     await expect(service.remove(1)).resolves.toBeUndefined();
+    /* Verifica se o Prisma foi chamado com o id */
 
+    /* Verifica se o Prisma foi chamado com o id */
     expect(prismaMock.user.delete).toHaveBeenCalledWith({
       where: { id: 1 },
     });
   });
 
+  /* Teste para verificar se o servico Remove deve lançar NotFoundException quando o usuário não existe */
   it('Remove deve lançar NotFoundException quando o usuário não existe', async () => {
+    /* Mock para erro de usuario nao encontrado */
     prismaMock.user.delete.mockRejectedValue(prismaRecordNotFoundError());
 
+    /* Verifica se o NotFoundException é lançado */
     await expect(service.remove(999)).rejects.toThrow(NotFoundException);
+    /* Verifica se o Prisma foi chamado com o id */
 
+    /* Verifica se o Prisma foi chamado com o id */
     expect(prismaMock.user.delete).toHaveBeenCalledWith({
       where: { id: 999 },
     });

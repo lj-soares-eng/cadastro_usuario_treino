@@ -6,11 +6,12 @@ import { AUTH_COOKIE_NAME, jwtSecret } from '../auth/auth.constants';
 import { parseCookieValue } from '../auth/cookie.util';
 import type { AccessTokenPayload } from '../auth/strategies/jwt.strategy';
 
+/* Serviço de autenticação de socket de administração */
 @Injectable()
 export class AdminSocketAuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  /**
+  /*
    * Valida JWT do cookie no handshake e confirma papel ADMIN.
    * Preenche `client.data.user` quando bem-sucedido.
    */

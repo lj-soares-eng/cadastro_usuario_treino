@@ -50,8 +50,11 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
+  /* Teste para verificar se o controller cria um usuario */
   describe('POST /users (create)', () => {
+    /* Teste para verificar se o controller cria um usuario */
     it('delega create ao UsersService com o DTO recebido', async () => {
+      /* Cria um DTO */
       const dto: CreateUserDto = {
         name: 'Ana',
         email: 'ana@test.com',
@@ -67,25 +70,35 @@ describe('UsersController', () => {
     });
   });
 
+  /* Teste para verificar se o controller busca todos os usuarios */
   describe('GET /users (findAll)', () => {
+    /* Teste para verificar se o controller busca todos os usuarios */
     it('delega findAll ao UsersService', async () => {
+      /* Cria uma lista de usuarios */
       const list = [{ id: 1, name: 'A', email: 'a@x.com', password: 'h' }];
       usersServiceMock.findAll.mockResolvedValue(list);
 
+      /* Busca todos os usuarios */
       const result = await controller.findAll();
 
+      /* Verifica se o UsersService foi chamado com o DTO recebido */
       expect(usersServiceMock.findAll).toHaveBeenCalledWith();
       expect(result).toBe(list);
     });
   });
 
+  /* Teste para verificar se o controller busca um usuario */
   describe('GET /users/:id (findOne)', () => {
+    /* Teste para verificar se o controller busca um usuario */
     it('delega findOne ao UsersService com id numérico', async () => {
       const user = { id: 7, name: 'B', email: 'b@x.com', password: 'h' };
+      /* Cria um usuario */
       usersServiceMock.findOne.mockResolvedValue(user);
 
+      /* Busca um usuario */
       const result = await controller.findOne('7');
 
+      /* Verifica se o UsersService foi chamado com o id numérico */
       expect(usersServiceMock.findOne).toHaveBeenCalledWith(7);
       expect(result).toBe(user);
     });
@@ -93,13 +106,16 @@ describe('UsersController', () => {
 
   /* Teste para verificar se o controller atualiza um usuário */
   describe('PATCH :id', () => {
+    /* Teste para verificar se o controller atualiza um usuário */
     it('lança ForbiddenException quando o token não é do usuário alvo', () => {
       const dto: UpdateUserDto = { name: 'Outro' };
 
+      /* Verifica se o ForbiddenException é lançado */
       expect(() => controller.update(99, dto, authedReq(1))).toThrow(
         ForbiddenException,
       );
 
+      /* Verifica se o UsersService nao foi chamado */
       expect(usersServiceMock.update).not.toHaveBeenCalled();
     });
 
@@ -107,6 +123,7 @@ describe('UsersController', () => {
     it('repassa update ao UsersService quando o id coincide com o usuário autenticado', async () => {
       const dto: UpdateUserDto = { name: 'Eu mesmo' };
       const safe = { id: 1, name: 'Eu mesmo', email: 'user@test.com' };
+      /* Cria um usuario */
       usersServiceMock.update.mockResolvedValue(safe);
 
       const result = await controller.update(1, dto, authedReq(1));

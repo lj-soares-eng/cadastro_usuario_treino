@@ -65,6 +65,33 @@ describe('UsersService', () => {
     expect(service).toBeDefined();
   });
 
+  /* Teste para verificar se o servico FindAll repassa ao Prisma e retorna a lista */
+  it('FindAll repassa ao Prisma e retorna a lista', async () => {
+    const users = [
+      { id: 1, name: 'A', email: 'a@x.com', password: 'h1' },
+      { id: 2, name: 'B', email: 'b@x.com', password: 'h2' },
+    ];
+    prismaMock.user.findMany.mockResolvedValue(users);
+
+    const result = await service.findAll();
+
+    expect(result).toBe(users);
+    expect(prismaMock.user.findMany).toHaveBeenCalledWith();
+  });
+
+  /* Teste para verificar se o servico FindOne repassa o id ao Prisma e retorna o usuário */
+  it('FindOne repassa o id ao Prisma e retorna o usuário', async () => {
+    const user = { id: 5, name: 'Lucas', email: 'l@x.com', password: 'hash' };
+    prismaMock.user.findUnique.mockResolvedValue(user);
+
+    const result = await service.findOne(5);
+
+    expect(result).toBe(user);
+    expect(prismaMock.user.findUnique).toHaveBeenCalledWith({
+      where: { id: 5 },
+    });
+  });
+
   /* Teste para verificar se os dados estão persistindo no
   banco de dados e retornar um usuário sem senha */
   it('Create deve persistir dados e retornar um usuário sem senha',
@@ -74,7 +101,7 @@ describe('UsersService', () => {
         id: 1,
         name: 'Lucas Soares',
         email: 'lucasdejesussoares@gmail.com',
-        password: 'hash-no-banco',
+        password: '$2b$10$RhIRXUOu8PfJkJBL9slXCuI9y48HiOa5EofJjJdIFXNmtnJrcTVRi',
       });
 
       /* Cria o usuario */

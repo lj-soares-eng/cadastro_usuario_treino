@@ -4,6 +4,7 @@ import type { Socket } from 'socket.io';
 import { AUTH_COOKIE_NAME } from '../auth/auth.constants';
 import { AdminSocketAuthService } from './admin-socket-auth.service';
 
+/* Função para criar um socket com um cookie */
 function socketWithCookie(value: string | undefined): Socket {
   return {
     handshake: {
@@ -15,7 +16,9 @@ function socketWithCookie(value: string | undefined): Socket {
   } as unknown as Socket;
 }
 
+/* Testes para o serviço de autenticação de socket de administração */
 describe('AdminSocketAuthService', () => {
+  /* Teste para verificar se o serviço retorna false quando não há cookie */
   it('retorna false quando não há cookie', async () => {
     const jwt = { verifyAsync: jest.fn() };
     const svc = new AdminSocketAuthService(jwt as unknown as JwtService);
@@ -25,6 +28,7 @@ describe('AdminSocketAuthService', () => {
     expect(jwt.verifyAsync).not.toHaveBeenCalled();
   });
 
+  /* Teste para verificar se o serviço retorna false quando o token indica USER */
   it('retorna false quando o token indica USER', async () => {
     const jwt = {
       verifyAsync: jest.fn().mockResolvedValue({
@@ -39,6 +43,7 @@ describe('AdminSocketAuthService', () => {
     await expect(svc.verifyAdminSocket(client)).resolves.toBe(false);
   });
 
+  /* Teste para verificar se o serviço retorna true e preenche client.data.user quando ADMIN */
   it('retorna true e preenche client.data.user quando ADMIN', async () => {
     const jwt = {
       verifyAsync: jest.fn().mockResolvedValue({

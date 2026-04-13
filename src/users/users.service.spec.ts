@@ -16,11 +16,23 @@ const prismaMock = {
 
 function prismaUniqueEmailError(): Prisma.PrismaClientKnownRequestError {
   return new Prisma.PrismaClientKnownRequestError(
-    'Unique constraint failed on the fields: (`email`)', {
-    code: 'P2002',
-    clientVersion: 'test',
-    meta: { modelName: 'User', target: ['email']},
-  });
+    'Unique constraint failed on the fields: (`email`)',
+    {
+      code: 'P2002',
+      clientVersion: 'test',
+      meta: { modelName: 'User', target: ['email'] },
+    },
+  );
+}
+
+function prismaRecordNotFoundError(): Prisma.PrismaClientKnownRequestError {
+  return new Prisma.PrismaClientKnownRequestError(
+    'Record to update not found.',
+    {
+      code: 'P2025',
+      clientVersion: 'test',
+    },
+  );
 }
 
 /* Teste de unidade para o servico de usuarios */ 
@@ -55,7 +67,7 @@ describe('UsersService', () => {
 
   /* Teste para verificar se os dados estão persistindo no
   banco de dados e retornar um usuário sem senha */
-  it('Create deve persistir dados e retonar um usuário sem senha',
+  it('Create deve persistir dados e retornar um usuário sem senha',
     async () => {
       /* Mock para criacao de usuario */
       prismaMock.user.create.mockResolvedValue({
@@ -101,39 +113,63 @@ describe('UsersService', () => {
     }
   );
 
-  it('Update deve persistir dados e retonar um usuário sem senha',
+  it('Update deve persistir dados e retornar um usuário sem senha', async () => {
+    prismaMock.user.update.mockResolvedValue({
+      id: 1,
+      name: 'Lucas Soares',
+      email: 'lucasdejesussoares@gmail.com',
+      password: 'hash-no-banco',
+    });
+
+    const dto = {
+      name: 'Lucas Soares',
+      email: 'lucasdejesussoares@gmail.com',
+    };
+    const result = await service.update(1, dto);
+
+    expect(result).toEqual({
+      id: 1,
+      name: 'Lucas Soares',
+      email: 'lucasdejesussoares@gmail.com',
+    });
+    expect(result).not.toHaveProperty('password');
+
+    expect(prismaMock.user.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: expect.objectContaining({
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+      }),
+    });
+  });
+
+  it('Update deve lançar ConflictException quando o e-mail já está cadastrado',
     async () => {
+      prismaMock.user.update.mockRejectedValue(prismaUniqueEmailError());
 
-      prismaMock.user.update.mockResolvedValue({
-        id: 1,
-        name: 'Lucas Soares',
-        email: 'lucasdejesussoares@gmail.com',
-      });
-
-        await expect(service.update(1, {
-        name: 'Lucas Soares',
-        email: 'lucasdejesussoares@gmail.com',
-      })).rejects.toThrow(ConflictException);
+      await expect(
+        service.update(1, {
+          name: 'Lucas Soares',
+          email: 'outro@gmail.com',
+        }),
+      ).rejects.toThrow(ConflictException);
 
       expect(prismaMock.user.update).toHaveBeenCalled();
-    }
+    },
   );
 
   it('Update deve lançar NotFoundException quando o usuário não é encontrado',
     async () => {
+      prismaMock.user.update.mockRejectedValue(prismaRecordNotFoundError());
 
-      prismaMock.user.update.mockResolvedValue({
-        id: 1,
-        name: 'Lucas Soares',
-        email: 'lucasdejesussoares@gmail.com',
-      });
-
-        await expect(service.update(1, {
-        name: 'Lucas Soares',
-        email: 'lucasdejesussoares@gmail.com',
-      })).rejects.toThrow(new NotFoundException("Usuário não encontrado"));
+      await expect(
+        service.update(1, {
+          name: 'Lucas Soares',
+          email: 'lucasdejesussoares@gmail.com',
+        }),
+      ).rejects.toThrow(NotFoundException);
 
       expect(prismaMock.user.update).toHaveBeenCalled();
-    }
+    },
   );
 });

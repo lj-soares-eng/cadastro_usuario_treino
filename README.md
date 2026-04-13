@@ -1,3 +1,4 @@
+![screen](https://github.com/user-attachments/assets/7dc4b80f-9ebf-4ded-b409-5c4334ca3f0e)
 ## Descrição
 Um pequeno projeto de cadastro de usuários para treinar minhas habilidades com autenticação usando JWT e Passport.
 

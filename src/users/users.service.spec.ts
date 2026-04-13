@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma.service';
 import { UsersService } from './users.service';
-import { ConflictException } from '@nestjs/common';
+import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 
 const prismaMock = {
@@ -98,6 +98,42 @@ describe('UsersService', () => {
     ).rejects.toThrow(ConflictException);
 
       expect(prismaMock.user.create).toHaveBeenCalled();
+    }
+  );
+
+  it('Update deve persistir dados e retonar um usuário sem senha',
+    async () => {
+
+      prismaMock.user.update.mockResolvedValue({
+        id: 1,
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+      });
+
+        await expect(service.update(1, {
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+      })).rejects.toThrow(ConflictException);
+
+      expect(prismaMock.user.update).toHaveBeenCalled();
+    }
+  );
+
+  it('Update deve lançar NotFoundException quando o usuário não é encontrado',
+    async () => {
+
+      prismaMock.user.update.mockResolvedValue({
+        id: 1,
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+      });
+
+        await expect(service.update(1, {
+        name: 'Lucas Soares',
+        email: 'lucasdejesussoares@gmail.com',
+      })).rejects.toThrow(new NotFoundException("Usuário não encontrado"));
+
+      expect(prismaMock.user.update).toHaveBeenCalled();
     }
   );
 });

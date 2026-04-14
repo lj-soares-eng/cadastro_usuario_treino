@@ -164,7 +164,7 @@ export default function AdminPage() {
 
       <button
         type="button"
-        className="admin-back-link"
+        className="btn-muted"
         onClick={() => navigate('/welcome')}
       >
         Voltar

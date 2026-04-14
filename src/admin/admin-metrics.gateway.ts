@@ -49,6 +49,7 @@ export class AdminMetricsGateway
     private readonly systemMetrics: SystemMetricsService,
   ) {}
 
+  /* Função para configurar o intervalo de atualização das métricas */
   afterInit(server: Server): void {
     /* Configura o intervalo de atualização das métricas */
     this.metricsInterval = setInterval(() => {
@@ -56,6 +57,7 @@ export class AdminMetricsGateway
     }, METRICS_INTERVAL_MS);
   }
 
+  /* Função para limpar o intervalo de atualização das métricas */
   onModuleDestroy(): void {
     /* Limpa o intervalo de atualização das métricas */
     if (this.metricsInterval) {

@@ -9,33 +9,40 @@ do framework.
 ## Setup do projeto
 
 ```bash
-$ npm install
+$ cd backend && npm install
+$ cd ../frontend && npm install
 ```
 
 ## Compilar e rodar o projeto
 
 ```bash
 # development
-$ npm run start
+$ cd backend && npm run start
 
 # watch mode
-$ npm run start:dev
+$ cd backend && npm run start:dev
 
 # production mode
-$ npm run start:prod
+$ cd backend && npm run start:prod
+```
+
+## Rodar o frontend
+
+```bash
+$ cd frontend && npm run dev
 ```
 
 ## Run tests
 
 ```bash
 # unit tests
-$ npm run test
+$ cd backend && npm run test
 
 # e2e tests
-$ npm run test:e2e
+$ cd backend && npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+$ cd backend && npm run test:cov
 ```
 
 ## Deployment

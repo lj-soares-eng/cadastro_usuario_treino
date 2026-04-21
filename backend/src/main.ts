@@ -23,7 +23,7 @@ async function bootstrap() {
 
   /* Habilita o CORS */
   app.enableCors({
-    origin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:5173',
+    origin: process.env.FRONTEND_ORIGIN ?? 'http://localhost:3000',
     /* Credenciais */
     credentials: true,
     /* Metodos permitidos */

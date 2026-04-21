@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Header } from '@nestjs/common';
 import { AppService } from './app.service';
 
 /* Controller de aplicacao */
@@ -8,6 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
   /* Metodo para retornar "O servidor está rodando!" */
   @Get()
+  @Header('Content-Type', 'text/html; charset=utf-8')
   getHello(): string {
     /* Retorna "O servidor está rodando!" */
     return this.appService.getHello();
